@@ -39,10 +39,7 @@ function ATScheckerpage() {
             {/* Card Container */}
             <div className="relative z-10 w-full max-w-lg bg-[#0A0F2C] rounded-[30px] border border-blue-400/30 backdrop-blur-lg p-8 shadow-[0_0_30px_#2f35ff60] text-white">
 
-                {/* Logout */}
-                <button className="absolute top-4 right-4 text-sm px-3 py-1 border border-blue-400 rounded-lg hover:bg-blue-500/20 transition">
-                    Logout
-                </button>
+                
 
                 {/* Header */}
                 <h1 className="text-3xl text-center font-bold mb-6 text-white">ATS Resume Checker</h1>
