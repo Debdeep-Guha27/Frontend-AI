@@ -55,7 +55,7 @@ function ATScheckerpage() {
                         <UploadCloud className="w-10 h-10 text-blue-400 animate-pulse" />
                     )}
                     <p className="text-base text-white">{fileName || 'Upload your resume'}</p>
-                    <p className="text-sm text-zinc-400">PDF or DOCX, 2MB max</p>
+                    <p className="text-sm text-zinc-400">UPLOAD PDF, 2MB max</p>
                     <input
                         type="file"
                         id="resumeUpload"
