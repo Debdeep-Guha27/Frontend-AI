@@ -10,6 +10,7 @@ import { Toaster } from "./components/ui/sonner";
 import AiGuidence from "./pages/AiGuidence";
 import Questionpage from "./pages/Questionpage";
 import ATScheckerpage from "./pages/ATScheckerpage";
+import ResumeQues from "./pages/Resumeques";
 
 function App() {
   const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ function App() {
           <Route path="/AI-Guidance" element={<AiGuidence />} />
           <Route path="/QuestionBank" element={<Questionpage/>}/>
           <Route path="/Resume-ATS" element={<ATScheckerpage/>}/>
+          <Route path="/Resume-Interview" element={<ResumeQues/>}/>
         </Routes>
         <Toaster />
       </QueryClientProvider>
