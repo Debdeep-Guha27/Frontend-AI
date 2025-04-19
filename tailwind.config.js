@@ -4,6 +4,13 @@ export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
   	extend: {
+		boxShadow: {
+			neon: '0 0 20px rgba(0, 191, 255, 0.6)',
+		  },
+		  animation: {
+			pulse: 'pulse 2s infinite',
+			ping: 'ping 4s cubic-bezier(0, 0, 0.2, 1) infinite',
+		  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
