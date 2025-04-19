@@ -40,6 +40,12 @@ function Features() {
             description:"Optimize your resume for Applicant Tracking Systems.",
             icon:"📄",
             route:"/Resume-ATS",
+          },
+          {
+            title:"Resume based Interview Questions",
+            description:"Get personalized interview questions based on your resume.",
+            icon:"📝",
+            route:"/Resume-Interview",
           }
         ].map((feature, index) => (
           <div
