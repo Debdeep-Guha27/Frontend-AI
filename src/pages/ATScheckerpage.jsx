@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { UploadCloud, FileCheck } from 'lucide-react';
+import useATScheck from '@/hooks/useATScheck';
 
 function ATScheckerpage() {
     const [fileName, setFileName] = useState('');
     const [fileSelected, setFileSelected] = useState(false);
     const [jobTitle, setJobTitle] = useState('');
+    const { isPending, isSuccess, error, mutateAsync } = useATScheck();
+    const [fileBackend , setFile] = useState(null);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        setFile(file);
         if (file && (file.type === 'application/pdf' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
             setFileName(file.name);
             setFileSelected(true);
@@ -16,12 +20,11 @@ function ATScheckerpage() {
         }
     };
 
-    const handleSubmit = () => {
-        if (!fileSelected || !jobTitle) {
-            alert('Please upload your resume and enter job title.');
-            return;
-        }
-        alert(`Submitted: ${fileName} for ${jobTitle}`);
+    const handleSubmit = async () => {
+        const formdata = new FormData();
+        formdata.append('resume', fileBackend);
+        formdata.append('job_title', jobTitle);
+        await mutateAsync(formdata);
     };
 
     return (
