@@ -4,69 +4,102 @@ import { UploadCloud, FileCheck } from 'lucide-react';
 function ATScheckerpage() {
     const [fileName, setFileName] = useState('');
     const [fileSelected, setFileSelected] = useState(false);
+    const [jobTitle, setJobTitle] = useState('');
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
+        if (file && (file.type === 'application/pdf' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
             setFileName(file.name);
             setFileSelected(true);
+        } else {
+            alert('Only PDF or DOCX files are allowed.');
         }
     };
 
     const handleSubmit = () => {
-        if (!fileSelected) {
-            alert('Please upload a PDF file before submitting.');
+        if (!fileSelected || !jobTitle) {
+            alert('Please upload your resume and enter job title.');
             return;
         }
-        // Handle submit logic here
-        alert(`Submitted: ${fileName}`);
+        alert(`Submitted: ${fileName} for ${jobTitle}`);
     };
 
     return (
-        <div className="min-h-screen w-full bg-[#0D0D0D] text-white flex items-center justify-center px-4 py-8">
-            <div className="max-w-3xl w-full bg-[#1A1A1A] rounded-3xl shadow-2xl p-10 space-y-8">
+        <div className="min-h-screen flex items-center justify-center bg-[#010922] relative overflow-hidden">
+            {/* Background Glow Effect */}
+            <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#050B2A] via-[#0A0F2C] to-[#0D132E]" />
 
-                <div className="text-center space-y-2">
-                    <h1 className="text-4xl font-extrabold tracking-tight">ATS Resume Checker</h1>
-                    <p className="text-zinc-400 text-lg">Upload your resume (PDF only) and check its compatibility with Applicant Tracking Systems.</p>
+
+            {/* Card Container */}
+            <div className="relative z-10 w-full max-w-lg bg-[#0A0F2C] rounded-[30px] border border-blue-400/30 backdrop-blur-lg p-8 shadow-[0_0_30px_#2f35ff60] text-white">
+
+                {/* Logout */}
+                <button className="absolute top-4 right-4 text-sm px-3 py-1 border border-blue-400 rounded-lg hover:bg-blue-500/20 transition">
+                    Logout
+                </button>
+
+                {/* Header */}
+                <h1 className="text-3xl text-center font-bold mb-6 text-white">ATS Resume Checker</h1>
+
+                {/* Upload Section */}
+                <label
+                    htmlFor="resumeUpload"
+                    className="w-full border border-blue-500/40 bg-[#141a35] hover:border-blue-500 transition-all duration-300 rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 cursor-pointer mb-6 shadow-inner"
+                >
+                    {fileSelected ? (
+                        <FileCheck className="w-10 h-10 text-green-400 animate-bounce" />
+                    ) : (
+                        <UploadCloud className="w-10 h-10 text-blue-400 animate-pulse" />
+                    )}
+                    <p className="text-base text-white">{fileName || 'Upload your resume'}</p>
+                    <p className="text-sm text-zinc-400">PDF or DOCX, 2MB max</p>
+                    <input
+                        type="file"
+                        id="resumeUpload"
+                        accept=".pdf,.docx"
+                        onChange={handleFileChange}
+                        className="hidden"
+                    />
+                </label>
+
+                {/* Job Title Input */}
+                <div className="mb-6">
+                    <label htmlFor="jobTitle" className="block text-sm text-white mb-2">Job title</label>
+                    <div className="relative w-full">
+                        <select
+                            id="jobTitle"
+                            value={jobTitle}
+                            onChange={(e) => setJobTitle(e.target.value)}
+                            className="appearance-none w-full px-10 py-2 rounded-xl bg-[#141a35] text-white border border-blue-500/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="" disabled>Select a Job Title</option>
+                            <option value="Frontend Developer">Frontend Developer</option>
+                            <option value="Backend Developer">Backend Developer</option>
+                            <option value="Full Stack Developer">Full Stack Developer</option>
+                            <option value="Software Engineer">Cloud Engineer</option>
+                            <option value="Data Scientist">Data Scientist</option>
+                            <option value="Product Manager">Machine Learning Engineer</option>
+                            <option value="UI/UX Designer">Mobile App Developer</option>
+                            <option value="Software Engineer">Machine Learning Engineer</option>
+                        </select>
+
+                        {/* Custom arrow icon */}
+                        <div className="absolute right-5 top-1/2 transform -translate-y-1/2 pointer-events-none text-white">
+                            ▼
+                        </div>
+                    </div>
+
+
                 </div>
 
-                <div className="border-2 border-dashed border-zinc-600 rounded-xl bg-[#2A2A2A] hover:border-indigo-500 transition-all duration-300">
-                    <label
-                        htmlFor="resumeUpload"
-                        className="flex flex-col items-center justify-center space-y-4 py-10 px-6 cursor-pointer"
-                    >
-                        {fileSelected ? (
-                            <FileCheck className="w-12 h-12 text-green-400" />
-                        ) : (
-                            <UploadCloud className="w-12 h-12 text-zinc-400" />
-                        )}
-                        <span className="text-base font-medium text-zinc-300">
-                            {fileName || "Click or drag a PDF file here"}
-                        </span>
-                        <input
-                            type="file"
-                            id="resumeUpload"
-                            accept=".pdf"
-                            onChange={handleFileChange}
-                            className="hidden"
-                        />
-                    </label>
-                </div>
-
-                <div className="flex justify-center">
-                    <button
-                        onClick={handleSubmit}
-                        className="px-6 py-3 bg-indigo-600 text-white rounded-full font-semibold text-lg shadow-md hover:bg-indigo-500 transition-all duration-300 disabled:opacity-50"
-                        disabled={!fileSelected}
-                    >
-                        Submit Resume
-                    </button>
-                </div>
-
-                <div className="text-center text-sm text-zinc-500">
-                    We’ll give you a quick analysis on how well your resume performs in ATS systems.
-                </div>
+                {/* Button */}
+                <button
+                    onClick={handleSubmit}
+                    className="w-full bg-blue-500 hover:bg-[#04D9FF] text-white py-3 rounded-full text-lg font-semibold transition shadow-lg disabled:opacity-80"
+                    disabled={!fileSelected}
+                >
+                    Check Resume
+                </button>
             </div>
         </div>
     );
