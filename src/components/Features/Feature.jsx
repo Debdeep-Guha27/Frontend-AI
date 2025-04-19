@@ -46,6 +46,12 @@ function Features() {
             description:"Get personalized interview questions based on your resume.",
             icon:"📝",
             route:"/Resume-Interview",
+          },
+          {
+            title:"Code to Video Visualization",
+            description:"Transform your code into engaging video presentations.",
+            route:"/Code-to-Video",
+            icon:"🎥",
           }
         ].map((feature, index) => (
           <div

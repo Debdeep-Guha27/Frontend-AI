@@ -11,6 +11,7 @@ import AiGuidence from "./pages/AiGuidence";
 import Questionpage from "./pages/Questionpage";
 import ATScheckerpage from "./pages/ATScheckerpage";
 import ResumeQues from "./pages/Resumeques";
+import VideoVisualizer from "./pages/VideoVisualizerPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ function App() {
           <Route path="/QuestionBank" element={<Questionpage/>}/>
           <Route path="/Resume-ATS" element={<ATScheckerpage/>}/>
           <Route path="/Resume-Interview" element={<ResumeQues/>}/>
+          <Route path="/Code-to-Video" element={<VideoVisualizer/>}/>
         </Routes>
         <Toaster />
       </QueryClientProvider>
