@@ -2,7 +2,7 @@ import Questions from "@/components/InterviewComponents/Questions";
 import { Particles } from "@/components/ui/particles";
 import UserContext from "@/contexts/UserContext";
 import { useAnalysis } from "@/hooks/useAnalysis";
-import { ArrowLeft, Loader2, CheckCircle } from "lucide-react";
+import { ArrowLeft, Loader2, CheckCircle, X } from "lucide-react";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -105,7 +105,13 @@ const InterViewQuestions = () => {
                       key={index}
                       className="bg-gray-800 p-3 rounded-lg text-white text-sm flex items-start gap-2 shadow-md hover:bg-gray-700 transition"
                     >
-                      <CheckCircle className="text-green-400 w-5 h-5" /> {line}
+                      {
+                        line.trim() === 'Marks: 0/5' ? (
+                          <span><X className="w-5 h-5 text-red-500" />{line}</span>
+                        ):(
+                            <span><CheckCircle className="text-green-400 w-5 h-5" />{line}</span>
+                        )
+                      }
                     </li>
                   ))}
                 </ul>
