@@ -1,10 +1,10 @@
-// Updated InterViewQuestions.jsx with response type handling fix
+// Updated InterViewQuestions.jsx with speech synthesis
 import Questions from "@/components/InterviewComponents/Questions";
 import { Particles } from "@/components/ui/particles";
 import UserContext from "@/contexts/UserContext";
 import { useAnalysis } from "@/hooks/useAnalysis";
 import { ArrowLeft, Loader2, CheckCircle, X } from "lucide-react";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InterViewQuestions = () => {
@@ -44,6 +44,18 @@ const InterViewQuestions = () => {
     }
   };
 
+  // 📣 Speak the current question aloud when it changes
+  useEffect(() => {
+    if (questions && questions[currentQuestionIndex]) {
+      const utterance = new SpeechSynthesisUtterance(questions[currentQuestionIndex]);
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.lang = 'en-US';
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [currentQuestionIndex, questions]);
+
   return (
     <div className="bg-black w-screen min-h-screen text-white flex flex-col items-center relative py-10">
       <Particles
@@ -81,6 +93,16 @@ const InterViewQuestions = () => {
                 question={questions[currentQuestionIndex]}
                 onAnswerChange={(answer) => handleAnswerChange(currentQuestionIndex, answer)}
               />
+              <button
+                onClick={() => {
+                  const utterance = new SpeechSynthesisUtterance(questions[currentQuestionIndex]);
+                  utterance.lang = 'en-US';
+                  window.speechSynthesis.speak(utterance);
+                }}
+                className="mt-4 text-sm text-blue-400 hover:text-blue-200 underline"
+              >
+                🔊 Read Question Again
+              </button>
             </div>
 
             {/* Navigation Buttons */}
