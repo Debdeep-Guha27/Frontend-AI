@@ -1,5 +1,8 @@
 # Interview Practice Website (Frontend)
 
+- [Backend Repo](https://github.com/Rupam-Mondal/AI-Interview-Agent-Backend)
+- [Pyhton backend](https://github.com/anweshagoswami/ATS_Checker)
+
 Welcome to the **Interview Practice Website**! This platform helps users practice interview-type questions based on their **stream** and **difficulty level** (Basic, Moderate, or Advanced). The system evaluates answers and provides marks accordingly.
 
 ## 🚀 Features
