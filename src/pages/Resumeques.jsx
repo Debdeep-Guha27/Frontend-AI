@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import Questions from '../components/InterviewComponents/Questions';
 import { UploadCloud, FileCheck, Loader } from 'lucide-react';
@@ -13,7 +13,7 @@ const ResumeQues = () => {
     const [loading, setLoading] = useState(false);
     const [analysisResult, setAnalysisResult] = useState([]);
     const { isPending, isSuccess, error, mutateAsync } = useAnalysis();
-
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const handleFileChange = (e) => {
         const uploadedFile = e.target.files[0];
         if (uploadedFile) {
@@ -48,6 +48,7 @@ const ResumeQues = () => {
             );
 
             setQuestions(filteredQuestions);
+            console.log(filteredQuestions)
         } catch (err) {
             console.error(err);
             alert('Something went wrong while generating questions');
@@ -67,7 +68,17 @@ const ResumeQues = () => {
             alert("Error submitting answers");
         }
     };
-
+    useEffect(() => {
+        if (questions && questions[currentQuestionIndex]) {
+          const utterance = new SpeechSynthesisUtterance(questions[currentQuestionIndex]);
+          utterance.lang = 'en-US';
+          utterance.rate = 1;
+          utterance.pitch = 1;
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utterance);
+        }
+      }, [currentQuestionIndex, questions]);
+      
     return (
         <div className="min-h-screen w-full bg-[#0A0F2C] text-white px-4 py-10 flex flex-col items-center">
             <div className="w-full max-w-4xl bg-[#14172b] p-8 rounded-2xl shadow-xl space-y-6">
@@ -103,39 +114,50 @@ const ResumeQues = () => {
                     </button>
                 </div>
 
-                {questions.length > 0 && (
+                {questions.length > 0 && questions[currentQuestionIndex] && (
                     <>
                         <div className="mt-6 space-y-6">
-                            {questions.map((q, index) => (
-                                <Questions
-                                    key={index}
-                                    question={q}
-                                    onAnswerChange={(answer) => handleAnswerChange(index, answer)}
-                                />
-                            ))}
+                            <Questions
+                                key={currentQuestionIndex}
+                                question={questions[currentQuestionIndex]}
+                                onAnswerChange={(answer) =>
+                                    handleAnswerChange(currentQuestionIndex, answer)
+                                }
+                            />
                         </div>
 
-                        <div className="mt-6 flex justify-center">
-                            {
-                                isPending ? (
-                                    <button
-                                        onClick={handleSubmitAllAnswers}
-                                        className="bg-green-600 hover:bg-[#39FF14] hover:shadow-[0_0_15px_#39FF14] text-white hover:text-black px-10 py-3 rounded-full font-semibold transition"
-                                    >
-                                        <Loader className='animate-spin'/>
-                                    </button>
-                                ):(
-                                        <button
-                                            onClick={handleSubmitAllAnswers}
-                                            className="bg-green-600 hover:bg-[#39FF14] hover:shadow-[0_0_15px_#39FF14] text-white hover:text-black px-10 py-3 rounded-full font-semibold transition"
-                                        >
-                                            Submit Answers
-                                        </button>
-                                )
-                            }
+                        <div className="mt-6 flex justify-center gap-4">
+                            {currentQuestionIndex < questions.length - 1 ? (
+                                <button
+                                    onClick={() => {
+                                        if (currentQuestionIndex < questions.length - 1) {
+                                            setCurrentQuestionIndex((prev) => prev + 1);
+                                        }
+                                    }}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 text-lg rounded-xl shadow-md transition"
+                                >
+                                    Next Question
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleSubmitAllAnswers}
+                                    disabled={isPending}
+                                    className="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-8 text-lg rounded-xl shadow-md transition flex items-center gap-2"
+                                >
+                                    {isPending ? (
+                                        <>
+                                            <Loader className="animate-spin w-5 h-5" /> Submitting...
+                                        </>
+                                    ) : (
+                                        "Submit All"
+                                    )}
+                                </button>
+                            )}
                         </div>
                     </>
                 )}
+
+
 
                 {analysisResult.length > 0 && (
                     <div className="mt-10 bg-[#1f2339] p-6 rounded-2xl shadow-lg space-y-4 text-sm sm:text-base">
